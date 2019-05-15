@@ -649,6 +649,11 @@ Ekf2::Ekf2():
 		_range_finder_subs[i] = orb_subscribe_multi(ORB_ID(distance_sensor), i);
 	}
 
+#ifdef CONFIG_ARCH_BOARD_PX4_SITL
+	// speedup SITL initialization by reducing the GPS initialization time
+	_ekf.set_min_required_gps_health_time(500_ms);
+#endif
+
 	// initialise parameter cache
 	updateParams();
 }
